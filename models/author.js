@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const WriterSchema = new Schema({
+const AutherSchema = new Schema({
     first_name: {type: String, required: true, maxlength:100},
     family_name: {type: String, required: true, maxlength:100},
     date_of_birth: {type: Date},
@@ -8,7 +8,7 @@ const WriterSchema = new Schema({
 })
 
 //virtuals for writer full name
-WriterSchema.virtual('name')
+AutherSchema.virtual('name')
 .get(() => {
     let fullName = '';
     if (this.first_name && this.family_name) {
@@ -23,18 +23,18 @@ WriterSchema.virtual('name')
 })
 
 // Virtuals for writer lifespan
-WriterSchema.virtual('lifespan')
+AutherSchema.virtual('lifespan')
 .get(() => {
     return (this.date_of_death.getYear() - this.date_of_birth.getYear()).toString();
 })
 
 
 // Virtual for author's URL
-WriterSchema
+AutherSchema
 .virtual('url')
 .get(function () {
   return '/catalog/author/' + this._id;
 });
 
 //Export model
-module.exports = mongoose.model('Author', WriterSchema);
+module.exports = mongoose.model('Author', AutherSchema);
